@@ -3,6 +3,7 @@ package com.todo.todoapp.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,8 +24,9 @@ public class User {
     @Column(name = "password", length = 60, nullable = false)
     private String password;
 
-    //private List<Task> tasks = new ArrayList<Task>();
-
+    // Um user pode ter várias tasks, One -> user / Many -> tasks
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<Task>();
 
     public User() {
     }
