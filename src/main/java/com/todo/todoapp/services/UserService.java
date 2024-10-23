@@ -23,8 +23,7 @@ public class UserService {
     @Transactional
     public User create(User user) {
         user.setId(null);
-        user = this.userRepository.save(user);
-        return user;
+        return this.userRepository.save(user);
     }
 
     @Transactional
