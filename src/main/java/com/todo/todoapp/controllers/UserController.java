@@ -32,6 +32,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@RequestBody User user, @PathVariable Long id) {
+        // Seta o ID do usuário com o parâmetro para garantir que o id do usuário atualizado seja o mesmo que veio da URL
         user.setId(id);
         this.userService.update(user);
         return ResponseEntity.noContent().build();
