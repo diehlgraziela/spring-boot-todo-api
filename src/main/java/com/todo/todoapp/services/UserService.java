@@ -23,6 +23,9 @@ public class UserService {
     @Transactional
     public User create(User user) {
         user.setId(null);
+        if(userRepository.existsByUsername(user.getUsername())){
+            throw new RuntimeException("Usuário já existe!");
+        }
         return this.userRepository.save(user);
     }
 

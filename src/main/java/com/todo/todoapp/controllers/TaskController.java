@@ -2,6 +2,7 @@ package com.todo.todoapp.controllers;
 
 import com.todo.todoapp.models.Task;
 import com.todo.todoapp.services.TaskService;
+import com.todo.todoapp.services.UserService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id){
         Task task = taskService.findById(id);
@@ -27,6 +31,7 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId){
+        this.userService.findById(userId);
         List<Task> tasks = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(tasks);
     }
