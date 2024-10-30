@@ -1,11 +1,17 @@
 package com.todo.todoapp.models;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = Task.TABLE_NAME)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Task {
     public static final String TABLE_NAME = "task";
 
@@ -22,50 +28,4 @@ public class Task {
 
     @Column(name = "description", length = 200, nullable = false)
     private String description;
-
-    public Task() {
-    }
-
-    public Task(Long id, User user, String description) {
-        this.id = id;
-        this.user = user;
-        this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(user, task.user) && Objects.equals(description, task.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, description);
-    }
 }
