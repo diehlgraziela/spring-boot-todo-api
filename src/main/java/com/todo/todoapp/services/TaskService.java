@@ -3,6 +3,8 @@ package com.todo.todoapp.services;
 import com.todo.todoapp.models.Task;
 import com.todo.todoapp.models.User;
 import com.todo.todoapp.repositories.TaskRepository;
+import com.todo.todoapp.services.exceptions.DataBindingViolationException;
+import com.todo.todoapp.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,7 @@ public class TaskService {
 
     public Task findById(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException("Tarefa " + id + " não encontrada!"));
+        return task.orElseThrow(() -> new ObjectNotFoundException("Tarefa " + id + " não encontrada!"));
     }
 
     public List<Task> findAllByUserId(Long userId){
@@ -49,7 +51,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possível excluir, pois há entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possível excluir, pois há entidades relacionadas!");
         }
     }
 }
