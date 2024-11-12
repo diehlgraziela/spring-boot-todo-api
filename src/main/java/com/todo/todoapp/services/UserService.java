@@ -1,17 +1,24 @@
 package com.todo.todoapp.services;
 
 import com.todo.todoapp.models.User;
+import com.todo.todoapp.models.enums.ProfileEnum;
 import com.todo.todoapp.repositories.UserRepository;
 import com.todo.todoapp.services.exceptions.DataBindingViolationException;
 import com.todo.todoapp.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -24,6 +31,8 @@ public class UserService {
     @Transactional
     public User create(User user) {
         user.setId(null);
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
         return this.userRepository.save(user);
     }
 
@@ -31,6 +40,7 @@ public class UserService {
     public User update(User user) {
         User newUser = findById(user.getId());
         newUser.setPassword(user.getPassword());
+        newUser.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         return this.userRepository.save(newUser);
     }
 
