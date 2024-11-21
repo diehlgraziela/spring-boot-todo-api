@@ -25,6 +25,11 @@ public class ErrorResponse {
         private final String message;
     }
 
+    public String toJson() {
+        return "{\"status\": " + getStatus() + ", " +
+                "\"message\": \"" + getMessage() + "\"}";
+    }
+
     public void addValidationError(String field, String message) {
         if (Objects.isNull(errors)) {
             this.errors = new ArrayList<>();

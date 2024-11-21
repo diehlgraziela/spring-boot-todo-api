@@ -37,7 +37,6 @@ public class JWTUtil {
             String username = claims.getSubject();
             Date expirationDate = claims.getExpiration();
             Date now = new Date(System.currentTimeMillis());
-
             return Objects.nonNull(username) && Objects.nonNull(expirationDate) && now.before(expirationDate);
         }
         return false;
@@ -45,7 +44,6 @@ public class JWTUtil {
 
     private Claims getClaims(String token) {
         SecretKey key = getKeyBySecret();
-
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (Exception e) {
