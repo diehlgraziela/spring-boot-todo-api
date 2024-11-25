@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
+// UserSpringSecurity é o usuário que está logado
 public class UserSpringSecurity implements UserDetails {
     private Long id;
     private String username;
