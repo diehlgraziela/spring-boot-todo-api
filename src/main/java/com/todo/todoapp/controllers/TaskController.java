@@ -1,6 +1,7 @@
 package com.todo.todoapp.controllers;
 
 import com.todo.todoapp.models.Task;
+import com.todo.todoapp.models.projection.TaskProjection;
 import com.todo.todoapp.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,13 @@ public class TaskController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<Task>> findAllByUser() {
-        List<Task> tasks = this.taskService.findAllByUser();
+    public ResponseEntity<List<TaskProjection>> findAllByUser() {
+        List<TaskProjection> tasks = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(tasks);
     }
+
+    // TODO - Get all tasks if user is admin
+    // @PreAuthorize("ROLE_ADMIN")
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody Task task) {

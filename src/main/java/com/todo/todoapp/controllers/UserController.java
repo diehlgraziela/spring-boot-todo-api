@@ -1,7 +1,10 @@
 package com.todo.todoapp.controllers;
 
 import com.todo.todoapp.models.User;
+import com.todo.todoapp.models.dto.UserCreateDTO;
+import com.todo.todoapp.models.dto.UserUpdateDTO;
 import com.todo.todoapp.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,16 +27,18 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody User user) {
-        this.userService.create(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+    public ResponseEntity<Void> create(@Valid @RequestBody UserCreateDTO obj) {
+        User user = this.userService.fromDTO(obj);
+        User newUser = this.userService.create(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody User user, @PathVariable Long id) {
+    public ResponseEntity<Void> update(@Valid @RequestBody UserUpdateDTO obj, @PathVariable Long id) {
         // Seta o ID do usuário com o parâmetro para garantir que o id do usuário atualizado seja o mesmo que veio da URL
-        user.setId(id);
+        obj.setId(id);
+        User user = this.userService.fromDTO(obj);
         this.userService.update(user);
         return ResponseEntity.noContent().build();
     }

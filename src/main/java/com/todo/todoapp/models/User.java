@@ -16,15 +16,13 @@ import java.util.stream.Collectors;
 @Table(name = User.TABLE_NAME)
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class User {
     public static final String TABLE_NAME = "user";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -33,8 +31,8 @@ public class User {
     @NotBlank
     private String username;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "password", length = 60, nullable = false)
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Size(min = 8, max = 60)
     @NotBlank
     private String password;
@@ -45,10 +43,10 @@ public class User {
     private List<Task> tasks = new ArrayList<Task>();
 
     // Garante que sempre vá buscar os perfis quando for buscar os usuários
+    @Column(name = "profile", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @JsonProperty(access = Access.WRITE_ONLY)
     @CollectionTable(name = "user_profile")
-    @Column(name = "profile", nullable = false)
     private Set<Integer> profiles = new HashSet<>();
 
     public Set<ProfileEnum> getProfiles() {
